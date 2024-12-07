@@ -1,44 +1,60 @@
 public class Banking {
 
-    public void withdraw(Customer customer, double sum, String currency) {
+    public void withdraw(Customer customer, double amount, String currency) {
+
         Account account = customer.getAccount();
 
         if (!account.getCurrency().equals(currency)) {
-            throw new RuntimeException("Can't extract withdraw " + currency);
+            throw new RuntimeException("Currency " + currency + " isn't supported.");
         }
-        setMoneyForCustomer(customer, sum, account.getType().isPremium());
+
+        processWithdrawal(customer, amount, account.getType().isPremium());
     }
 
-    private void setMoneyForCustomer(Customer customer, double sum, boolean isPremium) {
+    private void processWithdrawal(Customer customer, double amount, boolean isPremium) {
+
         switch (customer.getCustomerType()) {
             case COMPANY:
-                setMoneyForCompany(customer, sum, isPremium);
+                processWithdrawalForCompany(customer, amount, isPremium);
                 break;
             case PERSON:
-                setMoneyForPerson(customer.getAccount(), sum);
+                processWithdrawalForPerson(customer.getAccount(), amount);
                 break;
         }
     }
 
-    private void setMoneyForCompany(Customer customer, double sum, boolean isPremium) {
+    private void processWithdrawalForCompany(Customer customer, double amount, boolean isPremium) {
+
         Account account = customer.getAccount();
         double overdraftDiscount = customer.getCompanyOverdraftDiscount();
-        double finalSum = account.getMoney() - sum;
-        // we are in overdraft
-        if (account.getMoney() < 0) {
-            double overdraft = sum * account.overdraftFee() * overdraftDiscount;
-            account.setMoney(finalSum - (isPremium ? overdraft / 2 : overdraft));
+        double finalBalance = account.getMoney() - amount;
+
+        if (isAccountOverdrawn(account)) {
+            double overdraft = getOverdraftFee(amount, account, overdraftDiscount, isPremium);
+            account.setMoney(finalBalance - overdraft);
         } else {
-            account.setMoney(finalSum);
+            account.setMoney(finalBalance);
         }
     }
 
-    private void setMoneyForPerson(Account account, double sum) {
-        // we are in overdraft
-        if (account.getMoney() < 0) {
-            account.setMoney((account.getMoney() - sum) - sum * account.overdraftFee());
+    private double getOverdraftFee(double amount, Account account, double overdraftDiscount, boolean isPremium) {
+        double overdraftFee = amount * account.overdraftFee() * overdraftDiscount;
+        return isPremium ? overdraftFee / 2 : overdraftFee;
+    }
+
+    private boolean isAccountOverdrawn(Account account) {
+        return account.getMoney() < 0;
+    }
+
+    private void processWithdrawalForPerson(Account account, double amount) {
+
+        double finalBalance = account.getMoney() - amount;
+
+        if (isAccountOverdrawn(account)) {
+            double overdraft = getOverdraftFee(amount, account, 1, false);
+            account.setMoney(finalBalance - overdraft);
         } else {
-            account.setMoney(account.getMoney() - sum);
+            account.setMoney(finalBalance);
         }
     }
 }
