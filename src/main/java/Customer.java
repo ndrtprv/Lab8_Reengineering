@@ -40,13 +40,7 @@ public class Customer {
                     }
                     break;
                 case PERSON:
-
-                    // we are in overdraft
-                    if (account.getMoney() < 0) {
-                        account.setMoney((account.getMoney() - sum) - sum * account.overdraftFee());
-                    } else {
-                        account.setMoney(account.getMoney() - sum);
-                    }
+                    setMoneyForPerson(sum);
                     break;
             }
         } else {
@@ -62,13 +56,18 @@ public class Customer {
                     break;
                 case PERSON:
                     // we are in overdraft
-                    if (account.getMoney() < 0) {
-                        account.setMoney((account.getMoney() - sum) - sum * account.overdraftFee());
-                    } else {
-                        account.setMoney(account.getMoney() - sum);
-                    }
+                    setMoneyForPerson(sum);
                     break;
             }
+        }
+    }
+
+    private void setMoneyForPerson(double sum) {
+        // we are in overdraft
+        if (account.getMoney() < 0) {
+            account.setMoney((account.getMoney() - sum) - sum * account.overdraftFee());
+        } else {
+            account.setMoney(account.getMoney() - sum);
         }
     }
 
