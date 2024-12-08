@@ -66,13 +66,13 @@ public class Customer {
         this.companyOverdraftDiscount = companyOverdraftDiscount;
     }
 
-    public void withdraw(double amount, String currency) {
+    public void withdraw(double amount, Currency currency) {
         checkCurrencySupport(currency);
         processWithdrawal(amount);
     }
 
-    private void checkCurrencySupport(String currency) {
-        if (!account.getCurrency().equals(currency)) {
+    private void checkCurrencySupport(Currency currency) {
+        if (!account.getBalance().getCurrency().equals(currency)) {
             throw new RuntimeException("Currency " + currency + " isn't supported.");
         }
     }

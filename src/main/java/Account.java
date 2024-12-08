@@ -4,7 +4,6 @@ public class Account {
     private String iban;
     private AccountType type;
     private int daysOverdrawn;
-    private String currency;
     private Customer customer;
 
     public Account(AccountType type, int daysOverdrawn) {
@@ -68,14 +67,6 @@ public class Account {
 
     public AccountType getType() {
         return type;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
     }
 
     public Money getBalance() {
