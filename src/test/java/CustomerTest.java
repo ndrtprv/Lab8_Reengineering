@@ -6,7 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class CustomerTest {
 
     @Test
-    public void testWithdrawPersonWithNormalAccount() throws Exception {
+    public void testWithdrawPersonWithNormalAccount() {
         Account account = getAccountByTypeAndMoney(false, 34.0);
         Customer customer = getPersonCustomer(account);
         customer.withdraw(10, Currency.EUR);
@@ -14,7 +14,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void testWithdrawPersonWithNormalAccountAndOverdraft() throws Exception {
+    public void testWithdrawPersonWithNormalAccountAndOverdraft() {
         Account account = getAccountByTypeAndMoney(false, -10.0);
         Customer customer = getPersonCustomer(account);
         customer.withdraw(10, Currency.EUR);
@@ -22,7 +22,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void testWithdrawPersonWithPremiumAccount() throws Exception {
+    public void testWithdrawPersonWithPremiumAccount() {
         Account account = getAccountByTypeAndMoney(true, 34.0);
         Customer customer = getPersonCustomer(account);
         customer.withdraw(10, Currency.EUR);
@@ -30,7 +30,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void testWithdrawPersonWithPremiumAccountAndOverdraft() throws Exception {
+    public void testWithdrawPersonWithPremiumAccountAndOverdraft() {
         Account account = getAccountByTypeAndMoney(true, -10.0);
         Customer customer = getPersonCustomer(account);
         customer.withdraw(10, Currency.EUR);
@@ -38,7 +38,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void testWithdrawCompanyWithNormalAccount() throws Exception {
+    public void testWithdrawCompanyWithNormalAccount() {
         Account account = getAccountByTypeAndMoney(false, 34);
         Customer customer = getCompanyCustomer(account);
         customer.withdraw(10, Currency.EUR);
@@ -46,7 +46,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void testWithdrawCompanyWithNormalAccountAndOverdraft() throws Exception {
+    public void testWithdrawCompanyWithNormalAccountAndOverdraft() {
         Account account = getAccountByTypeAndMoney(false, -10);
         Customer customer = getCompanyCustomer(account);
         customer.withdraw(10, Currency.EUR);
@@ -54,7 +54,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void testWithdrawCompanyWithPremiumAccount() throws Exception {
+    public void testWithdrawCompanyWithPremiumAccount() {
         Account account = getAccountByTypeAndMoney(true, 34);
         Customer customer = getCompanyCustomer(account);
         customer.withdraw(10, Currency.EUR);
@@ -62,7 +62,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void testWithdrawCompanyWithPremiumAccountAndOverdraft() throws Exception {
+    public void testWithdrawCompanyWithPremiumAccountAndOverdraft() {
         Account account = getAccountByTypeAndMoney(true, -10);
         Customer customer = getCompanyCustomer(account);
         customer.withdraw(10, Currency.EUR);
@@ -70,7 +70,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void testPrintCustomerDaysOverdrawn() throws Exception {
+    public void testPrintCustomerDaysOverdrawn() {
         Customer customer = getPersonWithAccount(false);
         CustomerDataPrinter customerDataPrinter = new CustomerDataPrinter();
         assertThat(customerDataPrinter.printCustomerDaysOverdrawn(customer),
@@ -78,7 +78,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void testPrintCustomerMoney() throws Exception {
+    public void testPrintCustomerMoney() {
         Customer customer = getPersonWithAccount(false);
         CustomerDataPrinter customerDataPrinter = new CustomerDataPrinter();
         assertThat(customerDataPrinter.printCustomerMoney(customer),
@@ -86,7 +86,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void testPrintCustomerAccountNormal() throws Exception {
+    public void testPrintCustomerAccountNormal() {
         Customer customer = getPersonWithAccount(false);
         CustomerDataPrinter customerDataPrinter = new CustomerDataPrinter();
         assertThat(customerDataPrinter.printCustomerAccount(customer),
@@ -94,7 +94,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void testPrintCustomerAccountPremium() throws Exception {
+    public void testPrintCustomerAccountPremium() {
         Customer customer = getPersonWithAccount(true);
         CustomerDataPrinter customerDataPrinter = new CustomerDataPrinter();
         assertThat(customerDataPrinter.printCustomerAccount(customer),
