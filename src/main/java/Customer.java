@@ -4,7 +4,7 @@ public class Customer {
     private String surname;
     private String email;
     private CustomerType customerType;
-    private Account account;
+    private final Account account;
     private double companyOverdraftDiscount;
 
     public Customer(String name, String surname, String email, CustomerType customerType, Account account) {
@@ -56,10 +56,6 @@ public class Customer {
 
     public Account getAccount() {
         return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
     }
 
     public double getCompanyOverdraftDiscount() {

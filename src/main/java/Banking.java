@@ -4,57 +4,26 @@ public class Banking {
 
         Account account = customer.getAccount();
 
-        if (!account.getCurrency().equals(currency)) {
-            throw new RuntimeException("Currency " + currency + " isn't supported.");
-        }
+        checkCurrencySupport(currency, account);
 
         processWithdrawal(customer, amount, account.getType().isPremium());
     }
 
+    private void checkCurrencySupport(String currency, Account account) {
+        if (!account.getCurrency().equals(currency)) {
+            throw new RuntimeException("Currency " + currency + " isn't supported.");
+        }
+    }
+
     private void processWithdrawal(Customer customer, double amount, boolean isPremium) {
 
-        switch (customer.getCustomerType()) {
-            case COMPANY:
-                processWithdrawalForCompany(customer, amount, isPremium);
-                break;
-            case PERSON:
-                processWithdrawalForPerson(customer.getAccount(), amount);
-                break;
-        }
+        WithdrawalApproach withdrawalApproach = createWithdrawalApproach(customer, isPremium);
+        withdrawalApproach.withdraw(customer.getAccount(), amount);
     }
 
-    private void processWithdrawalForCompany(Customer customer, double amount, boolean isPremium) {
-
-        Account account = customer.getAccount();
-        double overdraftDiscount = customer.getCompanyOverdraftDiscount();
-        double finalBalance = account.getMoney() - amount;
-
-        if (isAccountOverdrawn(account)) {
-            double overdraft = getOverdraftFee(amount, account, overdraftDiscount, isPremium);
-            account.setMoney(finalBalance - overdraft);
-        } else {
-            account.setMoney(finalBalance);
-        }
-    }
-
-    private double getOverdraftFee(double amount, Account account, double overdraftDiscount, boolean isPremium) {
-        double overdraftFee = amount * account.overdraftFee() * overdraftDiscount;
-        return isPremium ? overdraftFee / 2 : overdraftFee;
-    }
-
-    private boolean isAccountOverdrawn(Account account) {
-        return account.getMoney() < 0;
-    }
-
-    private void processWithdrawalForPerson(Account account, double amount) {
-
-        double finalBalance = account.getMoney() - amount;
-
-        if (isAccountOverdrawn(account)) {
-            double overdraft = getOverdraftFee(amount, account, 1, false);
-            account.setMoney(finalBalance - overdraft);
-        } else {
-            account.setMoney(finalBalance);
-        }
+    private WithdrawalApproach createWithdrawalApproach(Customer customer, boolean isPremium) {
+        return customer.getCustomerType() == CustomerType.COMPANY ?
+                new CompanyWithdrawalApproach(isPremium, customer.getCompanyOverdraftDiscount()) :
+                new PersonWithdrawalApproach();
     }
 }
