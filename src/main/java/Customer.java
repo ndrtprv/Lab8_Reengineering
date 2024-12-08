@@ -65,4 +65,84 @@ public class Customer {
     public void setCompanyOverdraftDiscount(double companyOverdraftDiscount) {
         this.companyOverdraftDiscount = companyOverdraftDiscount;
     }
+
+    public void withdraw(double amount, String currency) {
+
+        checkCurrencySupport(currency);
+        processWithdrawal(amount);
+    }
+
+    private void checkCurrencySupport(String currency) {
+        if (!account.getCurrency().equals(currency)) {
+            throw new RuntimeException("Currency " + currency + " isn't supported.");
+        }
+    }
+
+    private void processWithdrawal(double amount) {
+
+        WithdrawalApproach withdrawalApproach = createWithdrawalApproach(account.getType().isPremium());
+        withdrawalApproach.withdraw(account, amount);
+    }
+
+    private WithdrawalApproach createWithdrawalApproach(boolean isPremium) {
+        return isPremium ?
+                new StandartWithdrawalApproach(customerType) :
+                new PremiumWithdrawalApproach(customerType);
+    }
+
+    interface WithdrawalApproach {
+        void withdraw(Account account, double amount);
+    }
+
+    class StandartWithdrawalApproach implements WithdrawalApproach {
+
+        private final CustomerType customerType;
+
+        public StandartWithdrawalApproach(CustomerType customerType) {
+            this.customerType = customerType;
+        }
+
+        @Override
+        public void withdraw(Account account, double amount) {
+
+            double finalBalance = account.getMoney() - amount;
+
+            if (account.getMoney() < 0) {
+                double overdraft = amount * account.overdraftFee();
+                double finalOverdraft = customerType == CustomerType.COMPANY ?
+                        overdraft * companyOverdraftDiscount:
+                        overdraft;
+
+                account.setMoney(finalBalance - finalOverdraft);
+            } else {
+                account.setMoney(finalBalance);
+            }
+        }
+    }
+
+    class PremiumWithdrawalApproach implements WithdrawalApproach {
+
+        private final CustomerType customerType;
+
+        public PremiumWithdrawalApproach(CustomerType customerType) {
+            this.customerType = customerType;
+        }
+
+        @Override
+        public void withdraw(Account account, double amount) {
+
+            double finalBalance = account.getMoney() - amount;
+
+            if (account.getMoney() < 0) {
+                double overdraft = amount * account.overdraftFee();
+                double finalOverdraft = customerType == CustomerType.COMPANY ?
+                        overdraft * companyOverdraftDiscount / 2 :
+                        overdraft;
+
+                account.setMoney(finalBalance - finalOverdraft);
+            } else {
+                account.setMoney(finalBalance);
+            }
+        }
+    }
 }

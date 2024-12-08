@@ -8,9 +8,22 @@ public class Account {
     private Customer customer;
 
     public Account(AccountType type, int daysOverdrawn) {
-        super();
         this.type = type;
         this.daysOverdrawn = daysOverdrawn;
+    }
+
+    public String getAccountData() {
+        return "Account: IBAN: " + iban + ", Money: "
+                + money + ", Account type: " + type.getAccountTypeName();
+    }
+
+    public String getCustomerData() {
+        return customer.getName() + " " + customer.getSurname() + " ";
+    }
+
+    public String getDaysOverdrawnData() {
+        return "Account: IBAN: " + iban +
+                ", Days Overdrawn: " + daysOverdrawn;
     }
 
     public double bankcharge() {
@@ -21,20 +34,16 @@ public class Account {
 
     private double overdraftCharge() {
         if (type.isPremium()) {
-            double result = 10;
-            if (getDaysOverdrawn() > 7)
-                result += (getDaysOverdrawn() - 7) * 1.0;
-            return result;
-        } else
+            return daysOverdrawn > 7 ?
+                    10 + (daysOverdrawn - 7) * 1.0 :
+                    10;
+        } else {
             return getDaysOverdrawn() * 1.75;
+        }
     }
 
     public double overdraftFee() {
-        if (type.isPremium()) {
-            return 0.10;
-        } else {
-            return 0.20;
-        }
+        return type.isPremium() ? 0.10 : 0.20;
     }
 
     public int getDaysOverdrawn() {
