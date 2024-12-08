@@ -5,25 +5,25 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class AccountTest {
 
     @Test
-    public void testBankchargePremiumLessThanAWeek() {
+    public void testBankchargePremiumLessThanAWeek() throws Exception {
         Account account = getPremiumAccount(5);
         assertThat(account.bankcharge(), is(14.5));
     }
 
     @Test
-    public void testBankchargePremiumMoreThanAWeek() {
+    public void testBankchargePremiumMoreThanAWeek() throws Exception {
         Account account = getPremiumAccount(9);
         assertThat(account.bankcharge(), is(16.5));
     }
 
     @Test
-    public void testOverdraftFeePremium() {
+    public void testOverdraftFeePremium() throws Exception {
         Account account = getPremiumAccount(9);
         assertThat(account.overdraftFee(), is(0.10));
     }
 
     @Test
-    public void testOverdraftFeeNotPremium() {
+    public void testOverdraftFeeNotPremium() throws Exception {
         Account account = getNormalAccount();
         assertThat(account.overdraftFee(), is(0.20));
     }
