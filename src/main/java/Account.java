@@ -1,9 +1,9 @@
 public class Account {
 
+    private Money balance;
     private String iban;
     private AccountType type;
     private int daysOverdrawn;
-    private double money;
     private String currency;
     private Customer customer;
 
@@ -14,11 +14,11 @@ public class Account {
 
     public String getAccountData() {
         return "Account: IBAN: " + getIban() + ", Money: "
-                + getMoney() + ", Account type: " + getType().getAccountTypeName();
+                + getBalance().getAmount() + ", Account type: " + getType().getAccountTypeName();
     }
 
     public String getMoneyData() {
-        return "Account: IBAN: " + getIban() + ", Money: " + getMoney();
+        return "Account: IBAN: " + getIban() + ", Money: " + getBalance().getAmount();
     }
 
     public String getDaysOverdrawnData() {
@@ -58,14 +58,6 @@ public class Account {
         this.iban = iban;
     }
 
-    public void setMoney(double money) {
-        this.money = money;
-    }
-
-    public double getMoney() {
-        return money;
-    }
-
     public Customer getCustomer() {
         return customer;
     }
@@ -84,5 +76,13 @@ public class Account {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public Money getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Money balance) {
+        this.balance = balance;
     }
 }

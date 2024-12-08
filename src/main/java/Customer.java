@@ -103,17 +103,17 @@ public class Customer {
         @Override
         public void withdraw(Account account, double amount) {
 
-            double finalBalance = account.getMoney() - amount;
+            double finalBalance = account.getBalance().getAmount() - amount;
 
-            if (account.getMoney() < 0) {
+            if (account.getBalance().getAmount() < 0) {
                 double overdraft = amount * account.overdraftFee();
                 double finalOverdraft = customerType == CustomerType.COMPANY ?
                         overdraft * companyOverdraftDiscount:
                         overdraft;
 
-                account.setMoney(finalBalance - finalOverdraft);
+                account.getBalance().setAmount(finalBalance - finalOverdraft);
             } else {
-                account.setMoney(finalBalance);
+                account.getBalance().setAmount(finalBalance);
             }
         }
     }
@@ -129,17 +129,17 @@ public class Customer {
         @Override
         public void withdraw(Account account, double amount) {
 
-            double finalBalance = account.getMoney() - amount;
+            double finalBalance = account.getBalance().getAmount() - amount;
 
-            if (account.getMoney() < 0) {
+            if (account.getBalance().getAmount() < 0) {
                 double overdraft = amount * account.overdraftFee();
                 double finalOverdraft = customerType == CustomerType.COMPANY ?
                         overdraft * companyOverdraftDiscount / 2 :
                         overdraft;
 
-                account.setMoney(finalBalance - finalOverdraft);
+                account.getBalance().setAmount(finalBalance - finalOverdraft);
             } else {
-                account.setMoney(finalBalance);
+                account.getBalance().setAmount(finalBalance);
             }
         }
     }
