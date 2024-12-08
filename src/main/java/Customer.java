@@ -78,7 +78,7 @@ public class Customer {
     }
 
     private void processWithdrawal(double amount) {
-        WithdrawalApproach withdrawalApproach = createWithdrawalApproach(account.getType().isPremium());
+        WithdrawalApproach withdrawalApproach = createWithdrawalApproach(account.isPremium());
         withdrawalApproach.withdraw(account, amount);
     }
 

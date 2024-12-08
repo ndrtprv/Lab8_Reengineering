@@ -1,6 +1,6 @@
 import org.junit.*;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class AccountTest {
 
@@ -29,12 +29,10 @@ public class AccountTest {
     }
 
     private Account getNormalAccount() {
-        AccountType premium = new AccountType(false);
-        return new Account(premium, 9);
+        return new Account(false, 9);
     }
 
     private Account getPremiumAccount(int daysOverdrawn) {
-        AccountType normal = new AccountType(true);
-        return new Account(normal, daysOverdrawn);
+        return new Account(true, daysOverdrawn);
     }
 }
