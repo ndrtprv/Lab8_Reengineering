@@ -67,7 +67,6 @@ public class Customer {
     }
 
     public void withdraw(double amount, String currency) {
-
         checkCurrencySupport(currency);
         processWithdrawal(amount);
     }
@@ -79,7 +78,6 @@ public class Customer {
     }
 
     private void processWithdrawal(double amount) {
-
         WithdrawalApproach withdrawalApproach = createWithdrawalApproach(account.getType().isPremium());
         withdrawalApproach.withdraw(account, amount);
     }

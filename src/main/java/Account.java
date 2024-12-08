@@ -13,17 +13,17 @@ public class Account {
     }
 
     public String getAccountData() {
-        return "Account: IBAN: " + iban + ", Money: "
-                + money + ", Account type: " + type.getAccountTypeName();
+        return "Account: IBAN: " + getIban() + ", Money: "
+                + getMoney() + ", Account type: " + getType().getAccountTypeName();
     }
 
-    public String getCustomerData() {
-        return customer.getName() + " " + customer.getSurname() + " ";
+    public String getMoneyData() {
+        return "Account: IBAN: " + getIban() + ", Money: " + getMoney();
     }
 
     public String getDaysOverdrawnData() {
-        return "Account: IBAN: " + iban +
-                ", Days Overdrawn: " + daysOverdrawn;
+        return "Account: IBAN: " + getIban() +
+                ", Days Overdrawn: " + getDaysOverdrawn();
     }
 
     public double bankcharge() {
@@ -34,8 +34,8 @@ public class Account {
 
     private double overdraftCharge() {
         if (type.isPremium()) {
-            return daysOverdrawn > 7 ?
-                    10 + (daysOverdrawn - 7) * 1.0 :
+            return getDaysOverdrawn() > 7 ?
+                    10 + (getDaysOverdrawn() - 7) * 1.0 :
                     10;
         } else {
             return getDaysOverdrawn() * 1.75;
@@ -76,10 +76,6 @@ public class Account {
 
     public AccountType getType() {
         return type;
-    }
-
-    public String printCustomer() {
-        return customer.getName() + " " + customer.getEmail();
     }
 
     public String getCurrency() {
