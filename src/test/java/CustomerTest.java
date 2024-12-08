@@ -1,7 +1,7 @@
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThat;
 
 public class CustomerTest {
 
@@ -50,7 +50,7 @@ public class CustomerTest {
         Account account = getAccountByTypeAndMoney(false, -10);
         Customer customer = getCompanyCustomer(account);
         customer.withdraw(10, Currency.EUR);
-        assertThat(account.getBalance().getAmount(), is(-22.0));
+        assertThat(account.getBalance().getAmount(), is(-21.0));
     }
 
     @Test
@@ -105,16 +105,14 @@ public class CustomerTest {
         Account account = new Account(premium, 9);
         Customer customer = getPersonCustomer(account);
         account.setIban("RO023INGB434321431241");
-        account.getBalance().setAmount(34.0);
-        account.getBalance().setCurrency(Currency.EUR);
+        account.setBalance(new Money(34.0, Currency.EUR));
         return customer;
     }
 
     private Account getAccountByTypeAndMoney(boolean premium, double money) {
         Account account = new Account(premium, 9);
         account.setIban("RO023INGB434321431241");
-        account.getBalance().setAmount(money);
-        account.getBalance().setCurrency(Currency.EUR);
+        account.setBalance(new Money(money, Currency.EUR));
         return account;
     }
 

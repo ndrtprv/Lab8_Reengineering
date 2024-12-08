@@ -13,7 +13,6 @@ public class Customer {
         this.email = email;
         this.customerType = customerType;
         this.account = account;
-        this.companyOverdraftDiscount = 1;
     }
 
     // use only to create companies
@@ -84,8 +83,8 @@ public class Customer {
 
     private WithdrawalApproach createWithdrawalApproach(boolean isPremium) {
         return isPremium ?
-                new StandartWithdrawalApproach(customerType) :
-                new PremiumWithdrawalApproach(customerType);
+                new PremiumWithdrawalApproach(customerType) :
+                new StandartWithdrawalApproach(customerType);
     }
 
     interface WithdrawalApproach {
